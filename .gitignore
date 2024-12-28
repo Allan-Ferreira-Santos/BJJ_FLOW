@@ -41,3 +41,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# files and folders
+
+.secrets
+firebase.json
+firebase_options.dart
+google-services.json
+GoogleService-Info.plist
