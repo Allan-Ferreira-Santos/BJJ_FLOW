@@ -51,6 +51,7 @@ firebase.json
 firebase_options.dart
 google-services.json
 GoogleService-Info.plist
+*.mocks.dart
 
 # FVM Version Cache
 .fvm/

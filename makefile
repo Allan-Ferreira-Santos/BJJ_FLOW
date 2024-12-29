@@ -27,7 +27,7 @@ check-flutter:
 config: check-fvm check-flutter
 
 init:
-	fvm use 3.27.1 && fvm flutter clean && fvm flutter pub get && make setup_secrets
+	fvm use 3.27.1 && fvm flutter clean && fvm flutter pub get && make setup_secrets && make generate_code
 
 setup_secrets: .copy_secrets
 	@echo "[APP] Configurando secrets"
@@ -47,4 +47,7 @@ else
 endif
 	@echo "[APP] Configuração de segredos concluída"
 
-	
+generate_code:
+	@echo "[APP] Gerando código com build_runner"
+	fvm flutter pub run build_runner build --delete-conflicting-outputs
+	@echo "[APP] Código gerado com sucesso"
