@@ -16,6 +16,6 @@ class Result<T> {
         error = null,
         isLoading = true;
 
-  bool get isSuccess => data != null && !isLoading;
+  bool get isSuccess => (data != null || error == null) && !isLoading; 
   bool get isFailure => error != null && !isLoading;
 }

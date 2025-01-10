@@ -1,5 +1,4 @@
 class FrequencyModel {
-  final String id;
   final String studentId;
   final String classId;
   final DateTime timestamp;
@@ -7,7 +6,6 @@ class FrequencyModel {
   final String status;
 
   FrequencyModel({
-    required this.id,
     required this.studentId,
     required this.classId,
     required this.timestamp,
