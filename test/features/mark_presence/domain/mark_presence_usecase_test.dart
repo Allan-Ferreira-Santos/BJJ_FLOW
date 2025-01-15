@@ -3,10 +3,12 @@ import 'package:mockito/annotations.dart';
 import 'mark_presence_usecase_test.mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bjj_flow/core/utils/result.dart';
-import '../data/repositories/mark_presence_repository_test.dart';
 import 'package:bjj_flow/core/utils/exceptions/server_exception.dart';
 import 'package:bjj_flow/features/mark_presence/data/models/frequecy_model.dart';
+import 'package:bjj_flow/features/mark_presence/domain/mark_presence_usecase.dart';
 import 'package:bjj_flow/features/mark_presence/utils/exceptions/invalid_params_exception.dart';
+import 'package:bjj_flow/features/mark_presence/data/repositories/mark_presence_repository_impl.dart';
+
 
 @GenerateMocks([MarkPresenceRepositoryImpl])
 void main() {

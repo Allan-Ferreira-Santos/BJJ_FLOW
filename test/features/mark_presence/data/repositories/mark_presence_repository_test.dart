@@ -1,68 +1,82 @@
-import 'dart:async';
+import 'package:mockito/mockito.dart';
+import 'package:mockito/annotations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:bjj_flow/core/utils/result.dart';
-import 'package:bjj_flow/core/domain/future_usecase.dart';
+import 'mark_presence_repository_test.mocks.dart';
+import 'package:bjj_flow/core/utils/exceptions/server_exception.dart';
 import 'package:bjj_flow/features/mark_presence/data/models/frequecy_model.dart';
-import 'package:bjj_flow/features/mark_presence/utils/exceptions/invalid_params_exception.dart';
+import 'package:bjj_flow/features/mark_presence/data/repositories/mark_presence_repository_impl.dart';
+import 'package:bjj_flow/features/mark_presence/data/services/mark_presence_client_service_impl.dart';
 
-class MarkPresenceViewModel {
-  final MarkPresenceUsecase markPresenceUsecase;
 
-  MarkPresenceViewModel({required this.markPresenceUsecase});
+@GenerateMocks([MarkPresenceClientServiceImpl])
+void main() {
+  late MarkPresenceRepositoryImpl markPresenceRepositoryImpl;
+  late MockMarkPresenceClientServiceImpl mockMarkPresenceClientServiceImpl;
 
-  final StreamController<Result> controllerMarkPresence =
-      StreamController<Result>.broadcast();
+  setUp(() {
+    mockMarkPresenceClientServiceImpl = MockMarkPresenceClientServiceImpl();
+    markPresenceRepositoryImpl = MarkPresenceRepositoryImpl(
+        markPresenceClientService: mockMarkPresenceClientServiceImpl);
+  });
 
-  Stream<Result> get getMarkPresence => controllerMarkPresence.stream;
+  final frequencyModel = FrequencyModel(
+    studentId: 'studentId',
+    classId: 'classId',
+    timestamp: DateTime.now(),
+    markedBy: 'markedBy',
+    status: 'status',
+  );
 
-  Future<void> markPresence(FrequencyModel frequencyModel) async {
-    controllerMarkPresence.add(Result.loading());
-    try {
-      final result = await markPresenceUsecase.call(frequencyModel);
-      controllerMarkPresence.add(result);
-    } catch (e) {
-      controllerMarkPresence.add(Result.failure(e.toString()));
-    }
-  }
+  test("Deve retornar sucesso ao enviar frequência com dados válidos",
+      () async {
+    when(mockMarkPresenceClientServiceImpl.markPresence(
+            frequecyModel: anyNamed("frequecyModel")))
+        .thenAnswer((_) async => Result.success());
 
-  void dispose() {
-    controllerMarkPresence.close();
-  }
-}
+    final result = await markPresenceRepositoryImpl.markPresence(
+        frequecyModel: frequencyModel);
 
-class MarkPresenceUsecase implements FutureUsecase<FrequencyModel, Result> {
-  final MarkPresenceRepository markPresenceRepository;
+    expect(result.isSuccess, true);
+    expect(result, isA<Result>());
+  });
 
-  MarkPresenceUsecase({required this.markPresenceRepository});
+  test("Deve enviar os dados corretos para o serviço", () async {
+    final expectedData = frequencyModel.toJson(frequencyModel);
 
-  @override
-  Future<Result> call([FrequencyModel? frequencyModel]) async {
-    try {
-      _validateFrequencyModel(frequencyModel);
-      return await markPresenceRepository.markPresence(
-          frequecyModel: frequencyModel!);
-    } catch (e) {
-      rethrow;
-    }
-  }
+    when(mockMarkPresenceClientServiceImpl.markPresence(
+            frequecyModel: anyNamed("frequecyModel")))
+        .thenAnswer((_) async => Result.success());
 
-  void _validateFrequencyModel(FrequencyModel? frequencyModel) {
-    if (frequencyModel == null) {
-      throw InvalidParamsException();
-    }
-  }
-}
+    await markPresenceRepositoryImpl.markPresence(
+        frequecyModel: frequencyModel);
 
-abstract class MarkPresenceRepository {
-  Future<Result> markPresence({required FrequencyModel frequecyModel});
-}
+    verify(mockMarkPresenceClientServiceImpl.markPresence(
+      frequecyModel: expectedData,
+    )).called(1);
+  });
 
-class MarkPresenceRepositoryImpl extends MarkPresenceRepository {
-  @override
-  Future<Result> markPresence({required FrequencyModel frequecyModel}) async {
-    try {
-      return Result.success();
-    } catch (e) {
-      rethrow;
-    }
-  }
+  test("Deve repropagar qualquer exceção repository", () async {
+    when(mockMarkPresenceClientServiceImpl.markPresence(
+            frequecyModel: anyNamed("frequecyModel")))
+        .thenThrow(Exception("Algo deu errado no repository"));
+
+    expect(
+      () async => await markPresenceRepositoryImpl.markPresence(
+          frequecyModel: frequencyModel),
+      throwsA(isA<Exception>()),
+    );
+  });
+
+  test("Deve repropagar uma exceção personalizada", () async {
+    when(mockMarkPresenceClientServiceImpl.markPresence(
+            frequecyModel: anyNamed("frequecyModel")))
+        .thenThrow(ServerException(message: "Erro no servidor"));
+
+    expect(
+      () async => await markPresenceRepositoryImpl.markPresence(
+          frequecyModel: frequencyModel),
+      throwsA(isA<ServerException>()),
+    );
+  });
 }

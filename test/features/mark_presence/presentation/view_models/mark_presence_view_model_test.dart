@@ -3,8 +3,10 @@ import 'package:mockito/annotations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bjj_flow/core/utils/result.dart';
 import 'mark_presence_view_model_test.mocks.dart';
-import '../../data/repositories/mark_presence_repository_test.dart';
 import 'package:bjj_flow/features/mark_presence/data/models/frequecy_model.dart';
+import 'package:bjj_flow/features/mark_presence/domain/mark_presence_usecase.dart';
+import 'package:bjj_flow/features/mark_presence/presentation/view_models/mark_presence_view_model.dart';
+
 
 @GenerateMocks([MarkPresenceUsecase])
 void main() {

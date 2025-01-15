@@ -12,4 +12,14 @@ class FrequencyModel {
     required this.markedBy,
     required this.status,
   });
+
+  Map<String, dynamic> toJson(FrequencyModel frequencyModel) {
+    return {
+      'studentId': frequencyModel.studentId,
+      'classId': frequencyModel.classId,
+      'timestamp': frequencyModel.timestamp,
+      'markedBy': frequencyModel.markedBy,
+      'status': frequencyModel.status,
+    };
+  }
 }
