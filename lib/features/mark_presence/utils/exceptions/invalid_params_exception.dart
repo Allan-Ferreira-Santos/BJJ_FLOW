@@ -1,5 +1,5 @@
 class InvalidParamsException implements Exception {
-  String? message;
+  final String? message;
 
-  InvalidParamsException();
+  InvalidParamsException({ this.message});
 }
