@@ -1,3 +1,3 @@
-abstract class Usecase<Input, Output> {
+abstract class UseCase<Input, Output> {
   Output call([Input? input]);
 }

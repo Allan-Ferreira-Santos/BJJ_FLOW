@@ -7,16 +7,15 @@ import 'package:bjj_flow/features/mark_presence/data/models/frequecy_model.dart'
 import 'package:bjj_flow/features/mark_presence/domain/mark_presence_usecase.dart';
 import 'package:bjj_flow/features/mark_presence/presentation/view_models/mark_presence_view_model.dart';
 
-
-@GenerateMocks([MarkPresenceUsecase])
+@GenerateMocks([MarkPresenceUseCase])
 void main() {
   late MarkPresenceViewModel markPresenceViewModel;
-  late MockMarkPresenceUsecase mockMarkPresenceUsecase;
+  late MockMarkPresenceUseCase mockMarkPresenceUseCase;
 
   setUp(() {
-    mockMarkPresenceUsecase = MockMarkPresenceUsecase();
+    mockMarkPresenceUseCase = MockMarkPresenceUseCase();
     markPresenceViewModel =
-        MarkPresenceViewModel(markPresenceUsecase: mockMarkPresenceUsecase);
+        MarkPresenceViewModel(markPresenceUsecase: mockMarkPresenceUseCase);
   });
 
   final frequencyModel = FrequencyModel(
@@ -41,7 +40,7 @@ void main() {
 
   test('Deve emitir loading e success ao marcar presença com sucesso',
       () async {
-    when(mockMarkPresenceUsecase.call(any))
+    when(mockMarkPresenceUseCase.call(any))
         .thenAnswer((_) async => Result.success());
 
     expectLater(
@@ -57,7 +56,7 @@ void main() {
 
   test("Deve emitir um loading e um failure ao tentar marcar a presencaça",
       () async {
-    when(mockMarkPresenceUsecase.call(any)).thenAnswer((_) async =>
+    when(mockMarkPresenceUseCase.call(any)).thenAnswer((_) async =>
         Result.failure("Error ao marcar presenca , tente novamente"));
 
     expectLater(
@@ -73,7 +72,7 @@ void main() {
 
   test("Deve emitir um loading e failure ao lançar exceção inesperada",
       () async {
-    when(mockMarkPresenceUsecase.call(any))
+    when(mockMarkPresenceUseCase.call(any))
         .thenThrow(Exception("Algo deu errado aqui"));
 
     expectLater(
@@ -102,7 +101,7 @@ void main() {
       status: '',
     );
 
-    when(mockMarkPresenceUsecase.call(any))
+    when(mockMarkPresenceUseCase.call(any))
         .thenAnswer((_) async => Result.failure("Modelo inválido"));
 
     expectLater(

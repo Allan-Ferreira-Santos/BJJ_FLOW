@@ -12,12 +12,12 @@ import 'package:bjj_flow/features/mark_presence/data/repositories/mark_presence_
 
 @GenerateMocks([MarkPresenceRepositoryImpl])
 void main() {
-  late MarkPresenceUsecase markPresenceUsecase;
+  late MarkPresenceUseCase markPresenceUsecase;
   late MockMarkPresenceRepositoryImpl mockMarkPresenceRepositoryImpl;
 
   setUp(() {
     mockMarkPresenceRepositoryImpl = MockMarkPresenceRepositoryImpl();
-    markPresenceUsecase = MarkPresenceUsecase(
+    markPresenceUsecase = MarkPresenceUseCase(
         markPresenceRepository: mockMarkPresenceRepositoryImpl);
   });
 

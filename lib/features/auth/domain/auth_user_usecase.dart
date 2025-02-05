@@ -6,7 +6,7 @@ import 'package:bjj_flow/features/auth/data/repositories/auth_user_repository.da
 import 'package:bjj_flow/features/auth/utils/exceptions/invalid_email_exeption.dart';
 import 'package:bjj_flow/features/auth/utils/exceptions/invalid_password_exeption.dart';
 
-class AuthUserUseCase implements FutureUsecase<String, Result<AuthUserModel>> {
+class AuthUserUseCase implements FutureUseCase<String, Result<AuthUserModel>> {
   final AuthUserRepository authUserRepository;
 
   AuthUserUseCase({required this.authUserRepository});

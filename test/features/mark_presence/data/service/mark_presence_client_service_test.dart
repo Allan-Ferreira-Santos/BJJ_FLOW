@@ -1,12 +1,11 @@
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'firebase_service_test.mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bjj_flow/core/data/fb_reference.dart';
+import 'mark_presence_client_service_test.mocks.dart';
 import 'package:bjj_flow/features/mark_presence/data/models/frequecy_model.dart';
 import 'package:bjj_flow/features/mark_presence/data/services/mark_presence_client_service_impl.dart';
-
 
 @GenerateMocks([
   FbReference,

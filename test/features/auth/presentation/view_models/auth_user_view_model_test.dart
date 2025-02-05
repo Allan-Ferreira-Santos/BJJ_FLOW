@@ -21,20 +21,9 @@ void main() {
   });
 
   final authUserModel = AuthUserModel(
-    userType: 'Student',
-    username: 'test_user',
-    fullName: 'Test User',
-    gender: 'Male',
-    birthDate: DateTime(2000, 1, 1),
-    phone: '123456789',
-    email: 'test@example.com',
-    cpf: '123.456.789-00',
-    addressId: 'address1',
-    graduationId: 'grad1',
-    projectId: 'proj1',
-    paymentId: 'pay1',
-    registrationDate: DateTime.now(),
-    updateDate: DateTime.now(),
+    email: 'teste@example.com',
+    password: 'password@123',
+    
   );
 
   Matcher resultMatcher(Result<AuthUserModel> expectedResult) {

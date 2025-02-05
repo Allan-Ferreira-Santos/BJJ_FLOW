@@ -20,37 +20,27 @@ void main() {
   });
 
   final authUserData = {
-    "userType": 'Student',
-    "username": 'test_user',
-    "fullName": 'Test User',
-    "gender": 'Male',
-    "birthDate": DateTime(2000, 1, 1).toIso8601String(),
-    "phone": '123456789',
     "email": 'test@example.com',
-    "cpf": '123.456.789-00',
-    "addressId": 'address1',
-    "graduationId": 'grad1',
-    "projectId": 'proj1',
-    "paymentId": 'pay1',
-    "registrationDate": DateTime.now().toIso8601String(),
-    "updateDate": DateTime.now().toIso8601String(),
+    "password": 'Pa@ssword123',
   };
 
   test("Deve retornar sucesso ao autenticar com dados válidos", () async {
     when(mockAuthUserClientServiceImpl.signUp(
       email: 'test@example.com',
-      password: 'pa@ssword123',
+      password: 'Pa@ssword123',
     )).thenAnswer((_) async => Result.success(authUserData));
 
     final result = await authUserRepositoryImpl.signUp(
-        email: 'test@example.com', password: 'pa@ssword123');
+      email: 'test@example.com',
+      password: 'Pa@ssword123',
+    );
 
-    expect(result.isSuccess, true);
+    expect(result.isSuccess, isTrue);
     expect(result.data, isA<AuthUserModel>());
-    expect(result.data?.username, 'test_user');
+    expect(result.data?.email, equals('test@example.com'));
     verify(mockAuthUserClientServiceImpl.signUp(
       email: 'test@example.com',
-      password: 'pa@ssword123',
+      password: 'Pa@ssword123',
     )).called(1);
   });
 
@@ -60,13 +50,11 @@ void main() {
       password: 'password123@',
     )).thenThrow(ServerException());
 
-    final result = authUserRepositoryImpl.signUp(
-      email: 'test@example.com',
-      password: 'password123@',
-    );
-
     await expectLater(
-      result,
+      () => authUserRepositoryImpl.signUp(
+        email: 'test@example.com',
+        password: 'password123@',
+      ),
       throwsA(isA<ServerException>()),
     );
 
@@ -79,15 +67,17 @@ void main() {
   test('Deve chamar o serviço de autenticação apenas uma vez', () async {
     when(mockAuthUserClientServiceImpl.signUp(
       email: 'test@example.com',
-      password: 'pa@ssword123',
+      password: 'Pa@ssword123',
     )).thenAnswer((_) async => Result.success(authUserData));
 
     await authUserRepositoryImpl.signUp(
-        email: 'test@example.com', password: 'pa@ssword123');
+      email: 'test@example.com',
+      password: 'Pa@ssword123',
+    );
 
     verify(mockAuthUserClientServiceImpl.signUp(
       email: 'test@example.com',
-      password: 'pa@ssword123',
+      password: 'Pa@ssword123',
     )).called(1);
   });
 }

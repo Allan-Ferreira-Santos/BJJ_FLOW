@@ -3,9 +3,8 @@ import 'package:bjj_flow/core/utils/result.dart';
 import 'package:bjj_flow/features/mark_presence/data/models/frequecy_model.dart';
 import 'package:bjj_flow/features/mark_presence/domain/mark_presence_usecase.dart';
 
-
 class MarkPresenceViewModel {
-  final MarkPresenceUsecase markPresenceUsecase;
+  final MarkPresenceUseCase markPresenceUsecase;
 
   MarkPresenceViewModel({required this.markPresenceUsecase});
 
